@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Emberlight — Last Lantern</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%94%A5%3C/text%3E%3C/svg%3E">
+<style>
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #070a16; }
+  /* v4: letterbox to 16:9 instead of stretching. On a portrait phone
+     the old 100%x100% stretched the arena tall and thin; now the
+     canvas keeps its shape with black bars, and input mapping uses
+     getBoundingClientRect() so touches still land correctly. */
+  #game { position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 100vw; height: 56.25vw; max-width: 177.78vh; max-height: 100vh; display: block; touch-action: none; cursor: crosshair; }
+  /* Read aloud, never shown: the status line screen readers announce. */
+  #status { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  /* Touch controls (v4): hidden on desktop, shown when the page detects
+     touch. Left half of the screen is the joystick (drawn on the canvas
+     where the thumb lands); the right side holds the buttons, so move and
+     fire never share one side. */
+  #touch-ui { display: none; }
+  body.touch #touch-ui { display: block; }
+  .tbtn {
+    position: fixed; z-index: 10;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 50%; border: 2px solid rgba(255, 233, 168, 0.7);
+    background: rgba(7, 10, 22, 0.55); color: #ffe9a8;
+    font: bold 15px system-ui, sans-serif; text-align: center;
+    touch-action: none; user-select: none; -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .tbtn:active { background: rgba(255, 196, 77, 0.45); }
+  #btn-fire { right: 22px; bottom: 26px; width: 96px; height: 96px; font-size: 17px; border-color: #ff8a3d; color: #ff8a3d; }
+  #btn-dash { right: 136px; bottom: 44px; width: 62px; height: 62px; }
+  #btn-ulti { right: 136px; bottom: 122px; width: 62px; height: 62px; border-color: #b78cff; color: #b78cff; }
+  #btn-ulti.ready { background: rgba(255, 196, 77, 0.75); color: #1a1030; border-color: #ffc44d; }
+  #btn-pause { right: 16px; top: 76px; width: 46px; height: 46px; font-size: 18px; }
+</style>
+</head>
+<body>
+<canvas id="game" tabindex="0" aria-label="Emberlight, Last Lantern: move with WASD, aim with the mouse, hold click to shoot embers, Space to dash. Survive all 10 waves."></canvas>
+<p id="status" role="status" aria-live="polite"></p>
+<div id="touch-ui" aria-hidden="true">
+  <button type="button" class="tbtn" id="btn-fire">FIRE</button>
+  <button type="button" class="tbtn" id="btn-dash">DASH</button>
+  <button type="button" class="tbtn" id="btn-ulti">ULTI</button>
+  <button type="button" class="tbtn" id="btn-pause">⏸</button>
+</div>
+<script type="module" src="./src/main.js"></script>
+</body>
+</html>
